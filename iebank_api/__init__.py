@@ -16,9 +16,9 @@ elif os.getenv('ENV') == 'dev':
 elif os.getenv('ENV') == 'ghci':
     print("Running in github mode")
     app.config.from_object('config.GithubCIConfig')
-else:
-    print("Running in production mode")
-    app.config.from_object('config.ProductionConfig')
+
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///local.db'
 
 db = SQLAlchemy(app)
 
@@ -26,9 +26,9 @@ from iebank_api.models import Account
 
 with app.app_context():
     # # Uncomment to add the country column to the account table
-    query = text("ALTER TABLE account ADD COLUMN country VARCHAR(32)")
-    db.session.execute(query)
-    db.session.commit()
+    # query = text("ALTER TABLE account ADD COLUMN country VARCHAR(32)")
+    # db.session.execute(query)
+    # db.session.commit()
     db.create_all()
 CORS(app)
 
